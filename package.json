@@ -1,0 +1,23 @@
+{
+  "name": "jobify",
+  "version": "1.0.0",
+  "description": "Project in Action - [Jobify](https://www.jobify.live/)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.7",
+    "validator": "^13.7.0"
+  }
+}

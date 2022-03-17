@@ -16,21 +16,28 @@ const initialState = {
 export const Register = () => {
     const [values, setValues] = useState(initialState);
 
-    const { showAlert} = useAppContext();
-    
+    const { isLoading, showAlert, displayAlert } = useAppContext();
+    console.log(showAlert);
 
     const toggleMember = () => {
         setValues({...values, isMember:!values.isMember});
     }
 
     const handleChange = (e) =>{
+        setValues({...values,[e.target.name]: e.target.value})
+        console.log(values);
         console.log(e.target);
     }
 
 
     const onSubmit = (e)=> {
         e.preventDefault();
-        console.log(e.target);
+        const {name, email, password, isMember} = values;
+        if(!email || !password || (!isMember && !name)){
+            displayAlert();
+            return
+        }
+        console.log(values,e.target);
     }
 
     return (
