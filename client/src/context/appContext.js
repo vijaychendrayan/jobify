@@ -1,6 +1,6 @@
-import { useContext, useReducer, useContext } from "react"
+import React, { useState, useReducer, useContext } from "react"
 
-export const initialState ={
+const initialState ={
     isLoading: false,
     showAlert: false,
     alertText: '',
@@ -8,22 +8,21 @@ export const initialState ={
 }
 
 const AppContext = React.createContext()
+
 const AppProvider = ({ children }) =>{
     const[state, setState] = useState(initialState)
 
     return(
         <AppContext.Provider
-            value={{
-                ...state
-            }}
+            value={{...state,}}
         >
             {children}
         </AppContext.Provider>
     )
 }
 
-export const useAppContext = () => {
+const useAppContext = () => {
     return useContext(AppContext)
 }
 
-export {AppProvider}
+export {AppProvider, initialState, useAppContext}
