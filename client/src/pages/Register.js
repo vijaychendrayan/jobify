@@ -16,7 +16,7 @@ const initialState = {
 export const Register = () => {
     const [values, setValues] = useState(initialState);
 
-    const { isLoading, showAlert, displayAlert } = useAppContext();
+    const { isLoading, showAlert, displayAlert, registerUser } = useAppContext();
     console.log(showAlert);
 
     const toggleMember = () => {
@@ -25,8 +25,8 @@ export const Register = () => {
 
     const handleChange = (e) =>{
         setValues({...values,[e.target.name]: e.target.value})
-        console.log(values);
-        console.log(e.target);
+        // console.log(values);
+        // console.log(e.target);
     }
 
 
@@ -37,7 +37,14 @@ export const Register = () => {
             displayAlert();
             return
         }
-        console.log(values,e.target);
+        const currentUser = {name, email, password}
+        if(isMember){
+            console.log('Already Member')
+        }else{
+            registerUser(currentUser)
+        }
+
+        // console.log(values,e.target);
     }
 
     return (
@@ -52,7 +59,7 @@ export const Register = () => {
               
               <FormRow type="email" name="email" value={values.email} handleChange={handleChange} />
               <FormRow type="password" name="password" value={values.password} handleChange={handleChange} />
-              <button type="submit" className="btn btn-block">Submit</button>
+              <button type="submit" className="btn btn-block" disabled={isLoading}>Submit</button>
 
               <p>
                   {values.isMember ? "Not a member yet ? " : "Already a member ?"}
