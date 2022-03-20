@@ -16,7 +16,7 @@ const initialState = {
 export const Register = () => {
     const navigate = useNavigate()
     const [values, setValues] = useState(initialState);
-    const {user, isLoading, showAlert, displayAlert, registerUser } = useAppContext();
+    const {user, isLoading, showAlert, displayAlert, registerUser, loginUser } = useAppContext();
     console.log(showAlert);
 
     const toggleMember = () => {
@@ -38,8 +38,10 @@ export const Register = () => {
             return
         }
         const currentUser = {name, email, password}
+        // const currentUser = {email, password}
         if(isMember){
             console.log('Already Member')
+            loginUser(currentUser)
         }else{
             registerUser(currentUser)
         }
