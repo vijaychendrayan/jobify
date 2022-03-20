@@ -16,7 +16,7 @@ const initialState = {
 export const Register = () => {
     const navigate = useNavigate()
     const [values, setValues] = useState(initialState);
-    const {user, isLoading, showAlert, displayAlert, registerUser, loginUser } = useAppContext();
+    const {user, isLoading, showAlert, displayAlert, registerUser, loginUser,setupUser } = useAppContext();
     console.log(showAlert);
 
     const toggleMember = () => {
@@ -41,9 +41,11 @@ export const Register = () => {
         // const currentUser = {email, password}
         if(isMember){
             console.log('Already Member')
-            loginUser(currentUser)
+            // loginUser(currentUser)
+            setupUser({currentUser,endPoint: 'login', alertText: 'Login Successful! Redirecting'})
         }else{
-            registerUser(currentUser)
+            // registerUser(currentUser)
+            setupUser({currentUser,endPoint: 'register', alertText: 'User Created! Redirecting'})
         }
 
         // console.log(values,e.target);
