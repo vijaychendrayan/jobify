@@ -9,7 +9,7 @@ const auth = async (req,res,next) => {
     console.log('Authenticate User')
     console.log(authHeader)
     if(!authHeader || !authHeader.startsWith('Bearer')){
-       throw new UnauthenticatedError('Authentication Invalied') 
+       throw new UnauthenticatedError('Authentication Invalid') 
     }
     const token = authHeader.split(' ')[1]
     try{
