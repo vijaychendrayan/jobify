@@ -18,6 +18,7 @@ import notFoundMiddleware from './middleware/not-found.js';
 import errorHandleMiddleware from './middleware/error-handler.js';
 import authenticateUser from './middleware/auth.js'
 
+// Color coded response
 if(process.env.NODE_ENV !== 'Production'){
     app.use(morgan('dev'))
 }

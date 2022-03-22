@@ -2,7 +2,8 @@
 import jwt from 'jsonwebtoken'
 import { UnauthenticatedError } from "../errors/index.js"
 
-const auth = async (req,rep,next) => {
+UnauthenticatedError
+const auth = async (req,res,next) => {
     
     const authHeader = req.headers.authorization
     console.log('Authenticate User')
@@ -14,12 +15,13 @@ const auth = async (req,rep,next) => {
     try{
         const payload = jwt.verify(token, process.env.JWT_SECRET)
         console.log('Payload : ', payload);
-        req.user = payload
+        // req.user = payload
+        req.user = {userId: payload.userID}
         next()
     }catch(error){
         throw new UnauthenticatedError('Authentication Invalied') 
     }
-    next()
+    // next()
 }
 
 export default auth
