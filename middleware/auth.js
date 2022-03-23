@@ -17,11 +17,12 @@ const auth = async (req,res,next) => {
         console.log('Payload : ', payload);
         // req.user = payload
         req.user = {userId: payload.userID}
+        console.log("Auth (req.user", req.user)
         next()
     }catch(error){
         throw new UnauthenticatedError('Authentication Invalid') 
     }
-    // next()
+    
 }
 
 export default auth

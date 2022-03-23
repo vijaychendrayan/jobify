@@ -3,13 +3,15 @@ import { CLEAR_ALERT, DISPLAY_ALERT,REGISTER_USER_BEGIN,REGISTER_USER_ERROR,REGI
          LOGIN_USER_BEGIN, LOGIN_USER_SUCCESS, LOGIN_USER_ERROR,
          SETUP_USER_BEGIN, SETUP_USER_SUCCESS, SETUP_USER_ERROR,
          TOGGLE_SIDEBAR, LOGOUT_USER,
-         UPDATE_USER_BEGIN, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR} from "./actions"
+         UPDATE_USER_BEGIN, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR,
+         HANDLE_CHANGE, CLEAR_VALUES,
+         CREATE_JOB_BEGIN, CREATE_JOB_SUCCESS, CREATE_JOB_ERROR} from "./actions"
 import reducer from "./reducer"
 import axios from 'axios'
 
 const token= localStorage.getItem('token')
 const user= localStorage.getItem('user')
-const userlocation= localStorage.getItem('location')
+const userLocation= localStorage.getItem('location')
 
 
 const initialState ={
@@ -19,9 +21,18 @@ const initialState ={
     alertType: '',
     user: user? JSON.parse(user):null,
     token:token,
-    userLocation: userlocation || '',
-    jobLocation: '',
+    userLocation: userLocation || '',
     showSidebar: false,
+    //Job location
+    isEditing: false,
+    editJobId: '',
+    position:'',
+    company:'',
+    jobLocation: userLocation|| '',
+    jobTypeOptions: ['full-time','part-time','remote','internship'],
+    jobType:'full-time',
+    statusOptions: ['interview','declined','pending'],
+    status: 'pending'
 }
 
 const AppContext = React.createContext()
@@ -188,11 +199,42 @@ const AppProvider = ({ children }) =>{
 
     }
 
+    const handleChange=({name, value})=>{
+        dispatch({
+            type: HANDLE_CHANGE,
+            payload: {name, value}
+        })
+    }
+
+    const clearValues=()=>{
+        dispatch({type: CLEAR_VALUES})
+
+    }
+
+    const createJob = async()=>{
+        dispatch({type:CREATE_JOB_BEGIN})
+        try{
+            const {position, company, jobLocation, jobType, status} = state
+            await authFetch.post('/jobs',{position, company, jobLocation, jobType, status})
+            dispatch({type:CREATE_JOB_SUCCESS})
+            dispatch({type:CLEAR_VALUES})
+
+
+        }catch(error){
+            if(error.response.status === 401) return
+            dispatch({type:CREATE_JOB_ERROR, payload:{msg:error.response.data.msg}})
+
+        }
+        clearAlert()
+
+    }
 
     return(
         <AppContext.Provider
             value={{...state, displayAlert, registerUser, loginUser, 
-                    setupUser, toggleSidebar,logoutUser, updateUser,}}
+                    setupUser, toggleSidebar,logoutUser, updateUser,
+                    handleChange,clearValues,createJob
+                }}
         >
             {children}
         </AppContext.Provider>
