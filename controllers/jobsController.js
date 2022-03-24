@@ -1,7 +1,9 @@
+import mongoose from "mongoose"
 import Job from "../model/Job.js"
 import { StatusCodes } from "http-status-codes"
 import { BadRequestError, NotFoundError, UnauthenticatedError } from "../errors/index.js"
 import checkPermission from "../utils/checkPermissions.js"
+
 
 
 const createJob = async (req,res)=>{
@@ -66,6 +68,23 @@ const updateJob = async (req,res)=>{
     res.status(StatusCodes.OK).json({updatedJob})
 }
 const showStats = async (req,res)=>{
-    res.send('showStats')
+    let stats = await Job.aggregate([
+        {$match:{createdBy: mongoose.Types.ObjectId(req.user.userId)}},
+        {$group:{_id:'$status', count:{$sum:1}}}
+    ])
+    stats=stats.reduce((acc,curr)=>{
+        const {_id:title,count}= curr
+        acc[title] = count
+        return acc
+    },{})
+
+    const defaultStats ={
+        pending:stats.pending || 0,
+        interview:stats.interview || 0,
+        declined:stats.declined || 0
+
+    }
+    let monthlyApplications = []
+    res.status(StatusCodes.OK).json({defaultStats,monthlyApplications})
 }
 export {createJob, deleteJob, getAllJob, updateJob, showStats}
