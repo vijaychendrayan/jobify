@@ -1,11 +1,14 @@
-import React, {  useReducer, useContext } from "react"
+import React, {  useReducer, useContext,  } from "react"
 import { CLEAR_ALERT, DISPLAY_ALERT,REGISTER_USER_BEGIN,REGISTER_USER_ERROR,REGISTER_USER_SUCCESS,
          LOGIN_USER_BEGIN, LOGIN_USER_SUCCESS, LOGIN_USER_ERROR,
          SETUP_USER_BEGIN, SETUP_USER_SUCCESS, SETUP_USER_ERROR,
          TOGGLE_SIDEBAR, LOGOUT_USER,
          UPDATE_USER_BEGIN, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR,
          HANDLE_CHANGE, CLEAR_VALUES,
-         CREATE_JOB_BEGIN, CREATE_JOB_SUCCESS, CREATE_JOB_ERROR} from "./actions"
+         CREATE_JOB_BEGIN, CREATE_JOB_SUCCESS, CREATE_JOB_ERROR,SET_EDIT_JOB,
+         DELETE_JOB_BEGIN, DELETE_JOB_SUCCESS, DELETE_JOB_ERROR,
+         EDIT_JOB_BEGIN,EDIT_JOB_ERROR,EDIT_JOB_SUCCESS,
+         GET_JOBS_BEGIN, GET_JOBS_SUCCESS} from "./actions"
 import reducer from "./reducer"
 import axios from 'axios'
 
@@ -32,7 +35,12 @@ const initialState ={
     jobTypeOptions: ['full-time','part-time','remote','internship'],
     jobType:'full-time',
     statusOptions: ['interview','declined','pending'],
-    status: 'pending'
+    status: 'pending',
+    jobs:[],
+    totalJobs:0,
+    numOfPages:1,
+    page:1
+
 }
 
 const AppContext = React.createContext()
@@ -229,11 +237,80 @@ const AppProvider = ({ children }) =>{
 
     }
 
+    const getJobs = async ()=> {
+        let url = `/jobs`
+        dispatch({type:GET_JOBS_BEGIN})
+        try{
+            const {data} = await authFetch(url)
+            const { jobs, totalJobs, numOfPages} = data
+            // console.log("getJob : ", data)
+            // console.log("jobs : ", jobs)
+            dispatch({type:GET_JOBS_SUCCESS,
+                      payload:{
+                          jobs,
+                          totalJobs,
+                          numOfPages
+                      }})
+
+        }catch(error){
+
+            console.log(error.response)
+            // logoutUser()
+        }
+        // clearAlert()
+    }
+
+    const setEditJob = (id) => {
+
+        dispatch({type:SET_EDIT_JOB, payload:{id}})
+
+        console.log(`set edit job : ${id}`);
+    }
+    const editJob = async () => {
+        dispatch({try:EDIT_JOB_BEGIN})
+        try{
+            const{position, company, jobLocation, jobType, status} = state
+            await authFetch.patch(`/jobs/${state.editJobId}`,{
+                company,
+                position,
+                jobLocation,
+                jobType,
+                status
+            })
+            dispatch({type:EDIT_JOB_SUCCESS})
+            dispatch({type:CLEAR_VALUES})
+
+        }catch(error){
+            if(error.response.status === 401) return
+            dispatch({
+                type:EDIT_JOB_ERROR,
+                payload:{msg: error.response.data.msg}
+            })
+        }
+
+        clearAlert()
+        
+    }
+
+    const deleteJob = async (jobId) => {
+        dispatch({type:DELETE_JOB_BEGIN})
+        try{
+
+            await authFetch.delete(`/jobs/${jobId}`)
+            getJobs()
+
+        }catch(error){
+            console.log(error)
+            // logoutUser()
+        }
+    }
+
+    
     return(
         <AppContext.Provider
             value={{...state, displayAlert, registerUser, loginUser, 
                     setupUser, toggleSidebar,logoutUser, updateUser,
-                    handleChange,clearValues,createJob
+                    handleChange,clearValues,createJob,getJobs,setEditJob,editJob,deleteJob
                 }}
         >
             {children}

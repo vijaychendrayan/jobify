@@ -6,7 +6,7 @@ const AddJob = () => {
     const{
         isLoading, isEditing, showAlert, displayAlert, position, company,
         jobLocation, jobType, jobTypeOptions, status,statusOptions,
-        handleChange, clearValues, createJob
+        handleChange, clearValues, createJob, editJob
     } = useAppContext()
 
     // console.log('Status Options : ', statusOptions)
@@ -28,7 +28,7 @@ const AddJob = () => {
             return
         }
         if(isEditing){
-            // eventually editJob()
+            editJob()
             return
 
         }
