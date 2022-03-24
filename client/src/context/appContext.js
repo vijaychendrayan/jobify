@@ -6,7 +6,7 @@ import { CLEAR_ALERT, DISPLAY_ALERT,REGISTER_USER_BEGIN,REGISTER_USER_ERROR,REGI
          UPDATE_USER_BEGIN, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR,
          HANDLE_CHANGE, CLEAR_VALUES,
          CREATE_JOB_BEGIN, CREATE_JOB_SUCCESS, CREATE_JOB_ERROR,SET_EDIT_JOB,
-         DELETE_JOB_BEGIN, DELETE_JOB_SUCCESS, DELETE_JOB_ERROR,
+         DELETE_JOB_BEGIN, 
          EDIT_JOB_BEGIN,EDIT_JOB_ERROR,EDIT_JOB_SUCCESS,
          GET_JOBS_BEGIN, GET_JOBS_SUCCESS} from "./actions"
 import reducer from "./reducer"
@@ -267,7 +267,8 @@ const AppProvider = ({ children }) =>{
         console.log(`set edit job : ${id}`);
     }
     const editJob = async () => {
-        dispatch({try:EDIT_JOB_BEGIN})
+        dispatch({type:EDIT_JOB_BEGIN})
+        console.log('EDIT_JOB_BEGIN')
         try{
             const{position, company, jobLocation, jobType, status} = state
             await authFetch.patch(`/jobs/${state.editJobId}`,{
@@ -278,7 +279,9 @@ const AppProvider = ({ children }) =>{
                 status
             })
             dispatch({type:EDIT_JOB_SUCCESS})
+            // console.log('EDIT_JOB_SUCCESS')
             dispatch({type:CLEAR_VALUES})
+            // console.log('CLEAR_VALUES')
 
         }catch(error){
             if(error.response.status === 401) return
@@ -286,6 +289,7 @@ const AppProvider = ({ children }) =>{
                 type:EDIT_JOB_ERROR,
                 payload:{msg: error.response.data.msg}
             })
+            // console.log('EDIT_JOB_ERROR')
         }
 
         clearAlert()
