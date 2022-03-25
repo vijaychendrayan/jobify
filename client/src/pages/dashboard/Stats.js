@@ -11,6 +11,7 @@ const Stats = () => {
     return (
         <>
             <StatsContainer />
+            <ChartsContainer />
             {monthlyApplications > 0 && <ChartsContainer />}
             
         </>
