@@ -9,7 +9,8 @@ import { CLEAR_ALERT, DISPLAY_ALERT,REGISTER_USER_BEGIN,REGISTER_USER_ERROR,REGI
          DELETE_JOB_BEGIN, 
          EDIT_JOB_BEGIN,EDIT_JOB_ERROR,EDIT_JOB_SUCCESS,
          GET_JOBS_BEGIN, GET_JOBS_SUCCESS,
-         SHOW_STATS_BEGIN, SHOW_STATS_SUCCESS} from "./actions"
+         SHOW_STATS_BEGIN, SHOW_STATS_SUCCESS,
+         CLEAR_FILTERS,} from "./actions"
 import reducer from "./reducer"
 import axios from 'axios'
 
@@ -43,6 +44,11 @@ const initialState ={
     page:1,
     stats:{},
     monthlyApplications:[],
+    search:'',
+    searchStatus:'all',
+    searchType:'all',
+    sort:'latest',
+    sortOptions:['latest','oldest', 'a-z','z-a'],
 
 }
 
@@ -241,7 +247,14 @@ const AppProvider = ({ children }) =>{
     }
 
     const getJobs = async ()=> {
-        let url = `/jobs`
+
+        // will add page later
+        const {search, searchStatus, searchType, sort} = state
+        let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`
+        if(search){
+            url = url + `&search=${search}`
+        }
+        
         dispatch({type:GET_JOBS_BEGIN})
         try{
             const {data} = await authFetch(url)
@@ -300,6 +313,7 @@ const AppProvider = ({ children }) =>{
     }
 
     const deleteJob = async (jobId) => {
+        
         dispatch({type:DELETE_JOB_BEGIN})
         try{
 
@@ -330,13 +344,18 @@ const AppProvider = ({ children }) =>{
         }
         clearAlert()
     }
+
+    const clearFilters = ()=>{
+        dispatch({type:CLEAR_FILTERS})
+    }
     
     return(
         <AppContext.Provider
             value={{...state, displayAlert, registerUser, loginUser, 
                     setupUser, toggleSidebar,logoutUser, updateUser,
                     handleChange,clearValues,createJob,getJobs,
-                    setEditJob,editJob,deleteJob,showStats
+                    setEditJob,editJob,deleteJob,showStats,
+                    clearFilters,
                 }}
         >
             {children}

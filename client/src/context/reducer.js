@@ -6,7 +6,8 @@ import { DISPLAY_ALERT, CLEAR_ALERT, REGISTER_USER_BEGIN,REGISTER_USER_ERROR,REG
     DELETE_JOB_BEGIN, 
     EDIT_JOB_BEGIN,EDIT_JOB_ERROR,EDIT_JOB_SUCCESS,
     GET_JOBS_BEGIN, GET_JOBS_SUCCESS,
-    SHOW_STATS_BEGIN, SHOW_STATS_SUCCESS} from "./actions"
+    SHOW_STATS_BEGIN, SHOW_STATS_SUCCESS,
+    CLEAR_FILTERS,} from "./actions"
 import { initialState } from "./appContext"
 
 const reducer = (state, action) => {
@@ -282,6 +283,17 @@ if(action.type === SHOW_STATS_SUCCESS){
         stats:action.payload.stats,
         monthlyApplications: action.payload.monthlyApplications,
         
+        
+    }
+}
+
+if(action.type === CLEAR_FILTERS){
+    return {
+        ...state,
+        search:'',
+        searchStatus:'all',
+        searchType:'all',
+        sort:'latest',
         
     }
 }
