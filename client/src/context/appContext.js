@@ -10,7 +10,7 @@ import { CLEAR_ALERT, DISPLAY_ALERT,REGISTER_USER_BEGIN,REGISTER_USER_ERROR,REGI
          EDIT_JOB_BEGIN,EDIT_JOB_ERROR,EDIT_JOB_SUCCESS,
          GET_JOBS_BEGIN, GET_JOBS_SUCCESS,
          SHOW_STATS_BEGIN, SHOW_STATS_SUCCESS,
-         CLEAR_FILTERS,} from "./actions"
+         CLEAR_FILTERS,CHANGE_PAGE} from "./actions"
 import reducer from "./reducer"
 import axios from 'axios'
 
@@ -249,8 +249,8 @@ const AppProvider = ({ children }) =>{
     const getJobs = async ()=> {
 
         // will add page later
-        const {search, searchStatus, searchType, sort} = state
-        let url = `/jobs?status=${searchStatus}&jobType=${searchType}&sort=${sort}`
+        const {page,search, searchStatus, searchType, sort} = state
+        let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`
         if(search){
             url = url + `&search=${search}`
         }
@@ -349,13 +349,17 @@ const AppProvider = ({ children }) =>{
         dispatch({type:CLEAR_FILTERS})
     }
     
+    const changePage = (page)=>{
+        dispatch({type: CHANGE_PAGE, payload:{page}})
+    }
+
     return(
         <AppContext.Provider
             value={{...state, displayAlert, registerUser, loginUser, 
                     setupUser, toggleSidebar,logoutUser, updateUser,
                     handleChange,clearValues,createJob,getJobs,
                     setEditJob,editJob,deleteJob,showStats,
-                    clearFilters,
+                    clearFilters,changePage
                 }}
         >
             {children}
