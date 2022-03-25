@@ -8,7 +8,8 @@ import { CLEAR_ALERT, DISPLAY_ALERT,REGISTER_USER_BEGIN,REGISTER_USER_ERROR,REGI
          CREATE_JOB_BEGIN, CREATE_JOB_SUCCESS, CREATE_JOB_ERROR,SET_EDIT_JOB,
          DELETE_JOB_BEGIN, 
          EDIT_JOB_BEGIN,EDIT_JOB_ERROR,EDIT_JOB_SUCCESS,
-         GET_JOBS_BEGIN, GET_JOBS_SUCCESS} from "./actions"
+         GET_JOBS_BEGIN, GET_JOBS_SUCCESS,
+         SHOW_STATS_BEGIN, SHOW_STATS_SUCCESS} from "./actions"
 import reducer from "./reducer"
 import axios from 'axios'
 
@@ -39,7 +40,9 @@ const initialState ={
     jobs:[],
     totalJobs:0,
     numOfPages:1,
-    page:1
+    page:1,
+    stats:{},
+    monthlyApplications:[],
 
 }
 
@@ -309,12 +312,31 @@ const AppProvider = ({ children }) =>{
         }
     }
 
+    const showStats = async () =>{
+
+        dispatch({type:SHOW_STATS_BEGIN})
+        try{
+
+            const {data} = await authFetch('/jobs/stats')
+            dispatch({type:SHOW_STATS_SUCCESS,
+                      payload:{
+                          stats: data.defaultStats,
+                          monthlyApplications: data.monthlyApplications,
+                      }})
+
+        }catch(error){
+            console.log(error)
+            // logoutUser()
+        }
+        clearAlert()
+    }
     
     return(
         <AppContext.Provider
             value={{...state, displayAlert, registerUser, loginUser, 
                     setupUser, toggleSidebar,logoutUser, updateUser,
-                    handleChange,clearValues,createJob,getJobs,setEditJob,editJob,deleteJob
+                    handleChange,clearValues,createJob,getJobs,
+                    setEditJob,editJob,deleteJob,showStats
                 }}
         >
             {children}
