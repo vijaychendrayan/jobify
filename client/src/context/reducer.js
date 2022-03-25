@@ -155,7 +155,10 @@ if(action.type === UPDATE_USER_ERROR){
 }
 
 if(action.type === HANDLE_CHANGE){
-    return {...state, [action.payload.name]: action.payload.value}
+    return {
+        ...state, 
+        page:1,
+        [action.payload.name]: action.payload.value}
 
 }
 
