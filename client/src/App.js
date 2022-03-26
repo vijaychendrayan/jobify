@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route, Link} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, } from 'react-router-dom'
 import { Landing, Register,  Error,ProtectedRoute} from './pages'
 import {AddJob, AllJobs, Profile, Stats, SharedLayout} from './pages/dashboard'
 

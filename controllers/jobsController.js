@@ -90,8 +90,8 @@ const updateJob = async (req,res)=>{
         throw new NotFoundError(`No Job with ID : ${jobId}`)
     }
     // Check Permission
-    console.log(typeof req.user.userId)
-    console.log(typeof job.createdBy)
+    //console.log(typeof req.user.userId)
+    //console.log(typeof job.createdBy)
 
     checkPermission(req.user, job.createdBy)
 

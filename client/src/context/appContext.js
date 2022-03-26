@@ -79,7 +79,7 @@ const AppProvider = ({ children }) =>{
             return response
         },
         (error)=>{
-            console.log(error.response)
+            // //console.log(error.response)
             if(error.response.status === 401){
                logoutUser() 
             }
@@ -116,7 +116,7 @@ const AppProvider = ({ children }) =>{
         dispatch({type:REGISTER_USER_BEGIN})
         try{
             const response = await axios.post('/api/v1/auth/register', currentUser)
-            // console.log(response)
+            // //console.log(response)
             const {user,token,location}= response.data
             dispatch({
                 type:REGISTER_USER_SUCCESS, 
@@ -126,7 +126,7 @@ const AppProvider = ({ children }) =>{
             addUserToLocalStorage({user, token, location})
 
         }catch (error){
-            // console.log(error.response)
+            // //console.log(error.response)
             dispatch({
                 type:REGISTER_USER_ERROR,
                 payload: {msg: error.response.data.msg},                
@@ -136,12 +136,12 @@ const AppProvider = ({ children }) =>{
     }
 
     const loginUser = async (currentUser) => {
-        console.log("App Context LoginUser -->",currentUser)
+        // //console.log("App Context LoginUser -->",currentUser)
         dispatch({type:LOGIN_USER_BEGIN})
         try{
             const {data} = await axios.post('/api/v1/auth/login', currentUser)
             const {user, token, location} = data
-            console.log(data)
+            // //console.log(data)
             dispatch({
                 type:LOGIN_USER_SUCCESS,
                 payload:{user, token, location},
@@ -149,7 +149,7 @@ const AppProvider = ({ children }) =>{
             // add user to local storage
             addUserToLocalStorage({user, token, location})
         }catch(error){
-            console.log("in error---->",error.response)
+            // //console.log("in error---->",error.response)
             dispatch({
                 type:LOGIN_USER_ERROR,
                 payload: {msg: error.response.data.msg},
@@ -160,12 +160,12 @@ const AppProvider = ({ children }) =>{
     }
 
     const setupUser = async ({currentUser, endPoint, alertText}) => {
-        console.log("App Context LoginUser -->",currentUser)
+        // //console.log("App Context LoginUser -->",currentUser)
         dispatch({type:SETUP_USER_BEGIN})
         try{
             const {data} = await axios.post(`/api/v1/auth/${endPoint}`, currentUser)
             const {user, token, location} = data
-            console.log(data)
+            ////console.log(data)
             dispatch({
                 type:SETUP_USER_SUCCESS,
                 payload:{user, token, location, alertText},
@@ -173,7 +173,7 @@ const AppProvider = ({ children }) =>{
             // add user to local storage
             addUserToLocalStorage({user, token, location})
         }catch(error){
-            console.log("in error---->",error.response)
+            ////console.log("in error---->",error.response)
             dispatch({
                 type:SETUP_USER_ERROR,
                 payload: {msg: error.response.data.msg},
@@ -197,14 +197,14 @@ const AppProvider = ({ children }) =>{
         dispatch({type: UPDATE_USER_BEGIN})
         try{
             const {data} = await authFetch.patch('/auth/updateUser',currentUser)
-            console.log(data)
+            ////console.log(data)
             const {user, location, token} = data
             dispatch({type:UPDATE_USER_SUCCESS,
                       payload: {user, location, token}
                      })
             addUserToLocalStorage({user, location, token})
         }catch(error){
-            // console.log(error.response)
+            // ////console.log(error.response)
             if(error.response.status !== 401){
                 dispatch({type:UPDATE_USER_ERROR,
                       payload: {msg: error.response.data.msg},
@@ -259,8 +259,8 @@ const AppProvider = ({ children }) =>{
         try{
             const {data} = await authFetch(url)
             const { jobs, totalJobs, numOfPages} = data
-            // console.log("getJob : ", data)
-            // console.log("jobs : ", jobs)
+            // //console.log("getJob : ", data)
+            // //console.log("jobs : ", jobs)
             dispatch({type:GET_JOBS_SUCCESS,
                       payload:{
                           jobs,
@@ -270,21 +270,21 @@ const AppProvider = ({ children }) =>{
 
         }catch(error){
 
-            console.log(error.response)
-            // logoutUser()
+            //console.log(error.response)
+            logoutUser()
         }
-        // clearAlert()
+        clearAlert()
     }
 
     const setEditJob = (id) => {
 
         dispatch({type:SET_EDIT_JOB, payload:{id}})
 
-        console.log(`set edit job : ${id}`);
+        //console.log(`set edit job : ${id}`);
     }
     const editJob = async () => {
         dispatch({type:EDIT_JOB_BEGIN})
-        console.log('EDIT_JOB_BEGIN')
+        //console.log('EDIT_JOB_BEGIN')
         try{
             const{position, company, jobLocation, jobType, status} = state
             await authFetch.patch(`/jobs/${state.editJobId}`,{
@@ -295,9 +295,9 @@ const AppProvider = ({ children }) =>{
                 status
             })
             dispatch({type:EDIT_JOB_SUCCESS})
-            // console.log('EDIT_JOB_SUCCESS')
+            // //console.log('EDIT_JOB_SUCCESS')
             dispatch({type:CLEAR_VALUES})
-            // console.log('CLEAR_VALUES')
+            // //console.log('CLEAR_VALUES')
 
         }catch(error){
             if(error.response.status === 401) return
@@ -305,7 +305,7 @@ const AppProvider = ({ children }) =>{
                 type:EDIT_JOB_ERROR,
                 payload:{msg: error.response.data.msg}
             })
-            // console.log('EDIT_JOB_ERROR')
+            // //console.log('EDIT_JOB_ERROR')
         }
 
         clearAlert()
@@ -321,8 +321,8 @@ const AppProvider = ({ children }) =>{
             getJobs()
 
         }catch(error){
-            console.log(error)
-            // logoutUser()
+            //console.log(error)
+            logoutUser()
         }
     }
 
@@ -339,7 +339,7 @@ const AppProvider = ({ children }) =>{
                       }})
 
         }catch(error){
-            console.log(error)
+            //console.log(error)
             // logoutUser()
         }
         clearAlert()

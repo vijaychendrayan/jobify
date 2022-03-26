@@ -6,8 +6,8 @@ UnauthenticatedError
 const auth = async (req,res,next) => {
     
     const authHeader = req.headers.authorization
-    console.log('Authenticate User')
-    console.log(authHeader)
+    //console.log('Authenticate User')
+    //console.log(authHeader)
     if(!authHeader || !authHeader.startsWith('Bearer')){
        throw new UnauthenticatedError('Authentication Invalid') 
     }
@@ -17,7 +17,7 @@ const auth = async (req,res,next) => {
         // console.log('Payload : ', payload);
         // req.user = payload
         req.user = {userId: payload.userID}
-        console.log("Auth (req.user", req.user)
+        //console.log("Auth (req.user", req.user)
         next()
     }catch(error){
         throw new UnauthenticatedError('Authentication Invalid') 
