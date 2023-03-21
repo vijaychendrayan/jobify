@@ -4,22 +4,21 @@
   "description": "Project in Action - [Jobify](https://www.jobify.live/)",
   "main": "index.js",
   "type": "module",
-    "scripts": {
+  "scripts": {
     "build-client": "cd client && npm run build",
-    "install-client":"cd client && npm install",
-    "heroku-postbuild":"npm run install-client && npm run build-client",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build-client",
     "server": "nodemon server --ignore client",
     "client": "npm start --prefix client",
     "start": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\" ",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^7.0.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.21"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -38,7 +37,7 @@
     "validator": "^13.7.0",
     "xss-clean": "^0.1.1"
   },
-  "engines":{
-    "node":"16.X"
+  "engines": {
+    "node": "16.X"
   }
 }

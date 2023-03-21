@@ -1,6 +1,6 @@
 import {BrowserRouter, Routes, Route, } from 'react-router-dom'
 import { Landing, Register,  Error,ProtectedRoute} from './pages'
-import {AddJob, AllJobs, Profile, Stats, SharedLayout} from './pages/dashboard'
+import {AddJob, AllJobs, Profile, Stats, SharedLayout, FabCost} from './pages/dashboard'
 
 
 function App() {
@@ -17,6 +17,7 @@ function App() {
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="fab-cost" element={<FabCost />} />
         </Route>
         <Route path="/register" element={<Register/>} />
         <Route path="/landing" element={<Landing/>} />
