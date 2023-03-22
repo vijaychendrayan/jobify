@@ -10,7 +10,7 @@ import { CLEAR_ALERT, DISPLAY_ALERT,REGISTER_USER_BEGIN,REGISTER_USER_ERROR,REGI
          EDIT_JOB_BEGIN,EDIT_JOB_ERROR,EDIT_JOB_SUCCESS,
          GET_JOBS_BEGIN, GET_JOBS_SUCCESS,
          SHOW_STATS_BEGIN, SHOW_STATS_SUCCESS,
-         CLEAR_FILTERS,CHANGE_PAGE} from "./actions"
+         CLEAR_FILTERS,CHANGE_PAGE,CALCULATE_FAB_COST} from "./actions"
 import reducer from "./reducer"
 import axios from 'axios'
 
@@ -49,6 +49,33 @@ const initialState ={
     searchType:'all',
     sort:'latest',
     sortOptions:['latest','oldest', 'a-z','z-a'],
+    // Fab Calculation start -------------------//
+    warpCount:'',
+    weftCount:'',
+    reed:'',
+    pick:'',
+    loomWidth:'',
+    warpGms:'',
+    weftGms:'',
+    ends:'',
+    warpYarnCost:'',
+    weftYarnCost:'',
+    warpYarnDyeCost:'',
+    weftYarnDyeCost:'',
+    dyeingWastage:'',
+    loomCrimp:'',
+    washingShrinkage:'',
+    warpingCharge:'',
+    sizingCharge:'',
+    washingCharge:'',
+    pickRate:'',
+    packTrans:'',
+    expense:'',
+    profit:'',
+    testval:'',
+     // Fab Calculation End------------------//
+
+
 
 }
 
@@ -352,20 +379,32 @@ const AppProvider = ({ children }) =>{
     const changePage = (page)=>{
         dispatch({type: CHANGE_PAGE, payload:{page}})
     }
+    // Fab Calculation start -------------------//
+    const calculateFabCost=()=>{
 
+        const { warpCount,weftCount,reed,pick,loomWidth,warpGms,
+                weftGms,ends,warpYarnCost,weftYarnCost,warpYarnDyeCost,weftYarnDyeCost,
+                dyeingWastage,loomCrimp,washingShrinkage,warpingCharge,sizingCharge,
+                washingCharge,pickRate,packTrans,expense,profit} = state
+        dispatch({type: CALCULATE_FAB_COST})
+    
+    }
+    // Fab Calculation End -------------------//
     return(
         <AppContext.Provider
             value={{...state, displayAlert, registerUser, loginUser, 
                     setupUser, toggleSidebar,logoutUser, updateUser,
                     handleChange,clearValues,createJob,getJobs,
                     setEditJob,editJob,deleteJob,showStats,
-                    clearFilters,changePage
+                    clearFilters,changePage,calculateFabCost
                 }}
         >
             {children}
         </AppContext.Provider>
     )
 }
+
+
 
 const useAppContext = () => {
     return useContext(AppContext)

@@ -10,7 +10,9 @@ import JobsContainer from "./JobsContainer"
 import StatsContainer from "./StatsContainer";
 import ChartsContainer from "./ChartsContainer";
 import Loading from "./Loding";
+import FabCostContainer from "./FabCostContainer";
+
 
 
 export  {Logo, FormRow, Alert,Navbar, SmallSidebar, BigSidebar,FormRowSelect,
-         SearchContainer,JobsContainer,StatsContainer,ChartsContainer,Loading }
+         SearchContainer,JobsContainer,StatsContainer,ChartsContainer,Loading,FabCostContainer }

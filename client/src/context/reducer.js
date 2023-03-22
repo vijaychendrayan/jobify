@@ -7,10 +7,15 @@ import { DISPLAY_ALERT, CLEAR_ALERT, REGISTER_USER_BEGIN,REGISTER_USER_ERROR,REG
     EDIT_JOB_BEGIN,EDIT_JOB_ERROR,EDIT_JOB_SUCCESS,
     GET_JOBS_BEGIN, GET_JOBS_SUCCESS,
     SHOW_STATS_BEGIN, SHOW_STATS_SUCCESS,
-    CLEAR_FILTERS,CHANGE_PAGE,} from "./actions"
+    CLEAR_FILTERS,CHANGE_PAGE,CALCULATE_FAB_COST} from "./actions"
 import { initialState } from "./appContext"
 
 const reducer = (state, action) => {
+    // Fab Calculation start -------------------//
+    if(action.type == CALCULATE_FAB_COST){
+
+    }
+    // Fab Calculation End -------------------//
     if(action.type === DISPLAY_ALERT){
         return {...state, showAlert:true, alertType:'danger', alertText:'Please Provide all values'}
     }
