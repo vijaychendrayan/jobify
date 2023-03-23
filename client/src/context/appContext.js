@@ -49,35 +49,7 @@ const initialState ={
     searchType:'all',
     sort:'latest',
     sortOptions:['latest','oldest', 'a-z','z-a'],
-    // Fab Calculation start -------------------//
-    warpCount:'',
-    weftCount:'',
-    reed:'',
-    pick:'',
-    loomWidth:'',
-    warpGms:'',
-    weftGms:'',
-    ends:'',
-    warpYarnCost:'',
-    weftYarnCost:'',
-    warpYarnDyeCost:'',
-    weftYarnDyeCost:'',
-    dyeingWastage:'',
-    loomCrimp:'',
-    washingShrinkage:'',
-    warpingCharge:'',
-    sizingCharge:'',
-    washingCharge:'',
-    pickRate:'',
-    packTrans:'',
-    expense:'',
-    profit:'',
-    testval:'',
-     // Fab Calculation End------------------//
-
-
-
-}
+   }
 
 const AppContext = React.createContext()
 
@@ -382,10 +354,7 @@ const AppProvider = ({ children }) =>{
     // Fab Calculation start -------------------//
     const calculateFabCost=()=>{
 
-        const { warpCount,weftCount,reed,pick,loomWidth,warpGms,
-                weftGms,ends,warpYarnCost,weftYarnCost,warpYarnDyeCost,weftYarnDyeCost,
-                dyeingWastage,loomCrimp,washingShrinkage,warpingCharge,sizingCharge,
-                washingCharge,pickRate,packTrans,expense,profit} = state
+       
         dispatch({type: CALCULATE_FAB_COST})
     
     }

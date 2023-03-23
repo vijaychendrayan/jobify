@@ -1,8 +1,38 @@
 import {FormRow, FormRowSelect} from '.'
+import { useState, useEffect } from "react"
 import { useAppContext } from '../context/appContext'
 import Wrapper from '../assets/wrappers/SearchContainer'
 
+
+const initialState = {
+    warpCount:0,
+    weftCount:0,
+    reed:0,
+    pick:0,
+    loomWidth:0,
+    warpGms:0,
+    weftGms:0,
+    ends:0,
+    warpYarnCost:0,
+    weftYarnCost:0,
+    warpYarnDyeCost:0,
+    weftYarnDyeCost:0,
+    dyeingWastage:0,
+    loomCrimp:0,
+    washingShrinkage:0,
+    warpingCharge:0,
+    sizingCharge:0,
+    washingCharge:0,
+    pickRate:0,
+    packTrans:0,
+    expense:0,
+    profit:0
+   
+}
+
+
 const FabCostContainer = ()=> {
+    const [values, setValues] = useState(initialState);
     const{
         isLoading,
         search,
@@ -12,24 +42,48 @@ const FabCostContainer = ()=> {
         sortOptions,
         statusOptions,
         jobTypeOptions,
-        handleChange,
+       
         clearFilters,
-        warpCount,
-        weftCount,
-        reed,pick,loomWidth,warpGms,
-        weftGms,ends,warpYarnCost,weftYarnCost,warpYarnDyeCost,weftYarnDyeCost,
-        dyeingWastage,loomCrimp,washingShrinkage,warpingCharge,sizingCharge,
-        washingCharge,pickRate,packTrans,expense,profit,testval
+        
     } = useAppContext()
 
-    const handleSearch = (e) => {
+    const handleChange = (e) => {
         if(isLoading) return
-        handleChange({name:e.target.name, value: e.target.value})
+        setValues({...values,[e.target.name]: e.target.value})
+        
+        
     }
 
     const handleSubmit=(e)=>{
         e.preventDefault()
-        console.log('WarpCount', warpCount,search)
+        console.log(values)
+        console.log('warpCount :', values.warpCount)
+        console.log('weftCount :', values.weftCount)
+        console.log('Reed :', values.reed)
+        console.log('pick :', values.pick)
+        console.log('loomWidth :', values.loomWidth)
+        console.log('warpGms :', values.warpGms)
+        console.log('weftGms :', values.weftGms)
+        console.log('ends :', values.ends)
+        console.log('warpYarnCost :', values.warpYarnCost)
+        console.log('weftYarnCost :', values.weftYarnCost)
+        console.log('warpYarnDyeCost :', values.warpYarnDyeCost)
+
+        console.log('weftYarnDyeCost :', values.weftYarnDyeCost)
+        console.log('dyeingWastage :', values.dyeingWastage)
+        console.log('loomCrimp :', values.loomCrimp)
+        console.log('washingShrinkage :', values.washingShrinkage)
+        console.log('warpingCharge :', values.warpingCharge)
+        console.log('sizingCharge :', values.sizingCharge)
+        console.log('washingCharge :', values.washingCharge)
+        console.log('pickRate :', values.pickRate)
+        console.log('packTrans :', values.packTrans)
+        console.log('expense :', values.expense)
+        console.log('profit :', values.profit)
+
+    
+
+   
         clearFilters()
     }
 
@@ -38,51 +92,51 @@ const FabCostContainer = ()=> {
             <form className='form'>
                 <h4>Fabric Cost Calculation</h4>
                 <div className='form-center'>
-                    <FormRow type="text" name='search' value={search} handleChange={handleSearch} />
+                    
                     <div>
-                        <FormRow type='text' name="Warp Count" value={warpCount} handleChange={handleSearch} />
-                        <FormRow type="text" name='Reed' value={reed} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Warp Gms" value={warpGms} handleChange={handleSearch}/>
+                        <FormRow type='number' name="warpCount" value={values.warpCount} handleChange={handleChange} />
+                        <FormRow type="number" name='reed' value={values.reed} handleChange={handleChange}/>
+                        <FormRow type="number" name="warpGms" value={values.warpGms} handleChange={handleChange}/>
                     </div> 
                 
                     <div>
-                        <FormRow type="text" name="Weft Count" value={weftCount} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Pick" value={pick} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Weft Gms" value={weftGms} handleChange={handleSearch}/>
+                        <FormRow type="number" name="weftCount" value={values.weftCount} handleChange={handleChange}/>
+                        <FormRow type="number" name="pick" value={values.pick} handleChange={handleChange}/>
+                        <FormRow type="number" name="weftGms" value={values.weftGms} handleChange={handleChange}/>
                     </div>
                     
                     <div>
-                        <FormRow type="text" name="Loom Width" value={loomWidth} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Ends" value={ends} handleChange={handleSearch}/>
+                        <FormRow type="number" name="loomWidth" value={values.loomWidth} handleChange={handleChange}/>
+                        <FormRow type="number" name="ends" value={values.ends} handleChange={handleChange}/>
                     </div>
                     
                     <div>
-                        <FormRow type="text" name="Warp Yarn Cost" value={warpYarnCost} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Warp Yarn Dye Cost" value={warpYarnDyeCost} handleChange={handleSearch}/>
+                        <FormRow type="number" name="warpYarnCost" value={values.warpYarnCost} handleChange={handleChange}/>
+                        <FormRow type="number" name="warpYarnDyeCost" value={values.warpYarnDyeCost} handleChange={handleChange}/>
                     </div>
 
                     <div>
-                        <FormRow type="text" name="Weft Yarn Cost" value={weftYarnCost} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Weft Yarn Dye Cost" value={weftYarnDyeCost} handleChange={handleSearch}/>
+                        <FormRow type="number" name="weftYarnCost" value={values.weftYarnCost} handleChange={handleChange}/>
+                        <FormRow type="number" name="weftYarnDyeCost" value={values.weftYarnDyeCost} handleChange={handleChange}/>
                     </div>
                     
                     <div>
-                        <FormRow type="text" name="Dyeing Wastage" value={dyeingWastage} handleChange={handleSearch}/>
+                        <FormRow type="number" name="dyeingWastage" value={values.dyeingWastage} handleChange={handleChange}/>
                     </div>
                     
                     <div>
-                        <FormRow type="text" name="Loom Crimp" value={loomCrimp} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Warping Charge" value={warpingCharge} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Washing Charge" value={washingCharge} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Pack and Trans" value={packTrans} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Profit" value={profit} handleChange={handleSearch}/>
+                        <FormRow type="number" name="loomCrimp" value={values.loomCrimp} handleChange={handleChange}/>
+                        <FormRow type="number" name="warpingCharge" value={values.warpingCharge} handleChange={handleChange}/>
+                        <FormRow type="number" name="washingCharge" value={values.washingCharge} handleChange={handleChange}/>
+                        <FormRow type="number" name="packTrans" value={values.packTrans} handleChange={handleChange}/>
+                        <FormRow type="number" name="profit" value={values.profit} handleChange={handleChange}/>
                     </div>
                     
                     <div>
-                        <FormRow type="text" name="Washing Shrinkage" value={washingShrinkage} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Sizing Charge" value={sizingCharge} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Pick Rate" value={pickRate} handleChange={handleSearch}/>
-                        <FormRow type="text" name="Expense" value={expense} handleChange={handleSearch}/>
+                        <FormRow type="number" name="washingShrinkage" value={values.washingShrinkage} handleChange={handleChange}/>
+                        <FormRow type="number" name="sizingCharge" value={values.sizingCharge} handleChange={handleChange}/>
+                        <FormRow type="number" name="pickRate" value={values.pickRate} handleChange={handleChange}/>
+                        <FormRow type="number" name="expense" value={values.expense} handleChange={handleChange}/>
                     </div>
                     
                     <button className='btn btn-block ' disabled={isLoading} onClick={handleSubmit}>
