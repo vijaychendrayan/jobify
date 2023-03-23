@@ -26,7 +26,8 @@ const initialState = {
     pickRate:0,
     packTrans:0,
     expense:0,
-    profit:0
+    profit:0,
+    rate:0,
    
 }
 
@@ -56,34 +57,67 @@ const FabCostContainer = ()=> {
 
     const handleSubmit=(e)=>{
         e.preventDefault()
-        console.log(values)
-        console.log('warpCount :', values.warpCount)
-        console.log('weftCount :', values.weftCount)
-        console.log('Reed :', values.reed)
-        console.log('pick :', values.pick)
-        console.log('loomWidth :', values.loomWidth)
-        console.log('warpGms :', values.warpGms)
-        console.log('weftGms :', values.weftGms)
+        // console.log(values)
+        // console.log('warpCount :', values.warpCount)
+        // console.log('weftCount :', values.weftCount)
+        // console.log('Reed :', values.reed)
+        // console.log('pick :', values.pick)
+        // console.log('loomWidth :', values.loomWidth)
+        // console.log('warpGms :', values.warpGms)
+        // console.log('weftGms :', values.weftGms)
         console.log('ends :', values.ends)
-        console.log('warpYarnCost :', values.warpYarnCost)
-        console.log('weftYarnCost :', values.weftYarnCost)
-        console.log('warpYarnDyeCost :', values.warpYarnDyeCost)
-
-        console.log('weftYarnDyeCost :', values.weftYarnDyeCost)
-        console.log('dyeingWastage :', values.dyeingWastage)
-        console.log('loomCrimp :', values.loomCrimp)
-        console.log('washingShrinkage :', values.washingShrinkage)
-        console.log('warpingCharge :', values.warpingCharge)
-        console.log('sizingCharge :', values.sizingCharge)
-        console.log('washingCharge :', values.washingCharge)
-        console.log('pickRate :', values.pickRate)
-        console.log('packTrans :', values.packTrans)
-        console.log('expense :', values.expense)
-        console.log('profit :', values.profit)
-
-    
-
-   
+        // console.log('warpYarnCost :', values.warpYarnCost)
+        // console.log('weftYarnCost :', values.weftYarnCost)
+        // console.log('warpYarnDyeCost :', values.warpYarnDyeCost)
+        // console.log('weftYarnDyeCost :', values.weftYarnDyeCost)
+        // console.log('dyeingWastage :', values.dyeingWastage)
+        // console.log('loomCrimp :', values.loomCrimp)
+        // console.log('washingShrinkage :', values.washingShrinkage)
+        // console.log('warpingCharge :', values.warpingCharge)
+        // console.log('sizingCharge :', values.sizingCharge)
+        // console.log('washingCharge :', values.washingCharge)
+        // console.log('pickRate :', values.pickRate)
+        // console.log('packTrans :', values.packTrans)
+        // console.log('expense :', values.expense)
+        // console.log('profit :', values.profit)
+        const checkWC = (1.4/4000) * parseFloat(values.ends)
+        console.log(checkWC)
+        var finalWarpingCharge
+        if (checkWC >= 1.4){
+             finalWarpingCharge = checkWC
+        }
+        else  finalWarpingCharge = 1.4
+        console.log(finalWarpingCharge)
+        const WG = ((parseFloat(values.reed) -8) * parseFloat(values.loomWidth) * 0.00059 ) / parseFloat(values.warpCount)
+        const EG = ((parseFloat(values.pick) - 4)*(parseFloat(values.loomWidth)+3)*0.00059)/ parseFloat(values.weftCount)
+        const W11 = parseFloat(values.warpYarnCost)+parseFloat(values.warpYarnDyeCost)
+        const W12 = W11 * (parseFloat(values.dyeingWastage)/100)
+        const W1 = ( W11 + W12 ) * WG
+        // const W1 = ((values.warpYarnCost+values.warpYarnDyeCost)+((values.warpYarnCost+values.warpYarnDyeCost)* (values.dyeingWastage/100)))*WG
+        const W2 = (W1 + (W1 * (parseFloat(values.loomCrimp)/100)))
+        const E11 = parseFloat(values.weftYarnCost)+ parseFloat(values.weftYarnDyeCost)
+        console.log('E11 : ', E11)
+        const E12 = E11 * (parseFloat(values.dyeingWastage)/100)
+        console.log('E12 : ', E12)
+        const E1 = (E11 + E12) * EG
+        // const E1 = ((values.weftYarnCost+values.weftYarnDyeCost)+((values.weftYarnCost+values.weftYarnDyeCost)*(values.dyeingWastage/100)))/EG
+        const C1 = W2+E1+finalWarpingCharge+parseFloat(values.sizingCharge)+parseFloat(values.washingCharge)+ ((parseFloat(values.pick)-4)*parseFloat(values.pickRate))
+        const C2 = C1 + ( C1 * (parseFloat(values.washingShrinkage)/100))
+        const C3 = C2 + parseFloat(values.packTrans) + parseFloat(values.expense)
+        const R =  C3 + ( C3 * (parseFloat(values.profit)/100))
+        setValues({...values,ends : finalWarpingCharge})
+        setValues({...values,warpGms : WG})
+        setValues({...values,weftGms : EG})
+        setValues({...values,rate : R})
+        console.log('WG : ', WG)
+        console.log('EG : ', EG)
+        console.log('W1 : ', W1)
+        console.log('W2 : ', W2)
+        console.log('E1 : ', E1)
+        console.log('C1 : ', C1)
+        console.log('C2 : ', C2)
+        console.log('C3 : ', C3)
+        console.log('R  : ', R)
         clearFilters()
     }
 
@@ -137,11 +171,13 @@ const FabCostContainer = ()=> {
                         <FormRow type="number" name="sizingCharge" value={values.sizingCharge} handleChange={handleChange}/>
                         <FormRow type="number" name="pickRate" value={values.pickRate} handleChange={handleChange}/>
                         <FormRow type="number" name="expense" value={values.expense} handleChange={handleChange}/>
+                        <FormRow type="number" name="rate" value={values.rate} handleChange={handleChange}/>
                     </div>
                     
                     <button className='btn btn-block ' disabled={isLoading} onClick={handleSubmit}>
                                 Calculate Cost
                     </button>
+                    
                     
 
                 </div>
