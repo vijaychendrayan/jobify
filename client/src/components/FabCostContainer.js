@@ -51,6 +51,9 @@ const FabCostContainer = ()=> {
     const handleChange = (e) => {
         if(isLoading) return
         setValues({...values,[e.target.name]: e.target.value})
+        if(e.target.name == 'loomWidth'){
+            console.log('loom width')
+        }
         
         
     }
@@ -65,7 +68,7 @@ const FabCostContainer = ()=> {
         // console.log('loomWidth :', values.loomWidth)
         // console.log('warpGms :', values.warpGms)
         // console.log('weftGms :', values.weftGms)
-        console.log('ends :', values.ends)
+        // console.log('ends :', values.ends)
         // console.log('warpYarnCost :', values.warpYarnCost)
         // console.log('weftYarnCost :', values.weftYarnCost)
         // console.log('warpYarnDyeCost :', values.warpYarnDyeCost)
@@ -80,7 +83,11 @@ const FabCostContainer = ()=> {
         // console.log('packTrans :', values.packTrans)
         // console.log('expense :', values.expense)
         // console.log('profit :', values.profit)
-        const checkWC = (1.4/4000) * parseFloat(values.ends)
+        console.log("-----------------------------------------------------------")
+        const calcEnds = (parseFloat(values.reed) - 8 ) * parseFloat(values.loomWidth)
+        console.log("Ends : ", calcEnds)
+        
+        const checkWC = (1.4/4000) * calcEnds
         console.log(checkWC)
         var finalWarpingCharge
         if (checkWC >= 1.4){
@@ -88,8 +95,8 @@ const FabCostContainer = ()=> {
         }
         else  finalWarpingCharge = 1.4
         console.log(finalWarpingCharge)
-        const WG = ((parseFloat(values.reed) -8) * parseFloat(values.loomWidth) * 0.00059 ) / parseFloat(values.warpCount)
-        const EG = ((parseFloat(values.pick) - 4)*(parseFloat(values.loomWidth)+3)*0.00059)/ parseFloat(values.weftCount)
+        const WG = ((parseFloat(values.reed) - 8)*(parseFloat(values.loomWidth)   * 0.00059))/ parseFloat(values.warpCount)
+        const EG = ((parseFloat(values.pick) - 4)*(parseFloat(values.loomWidth)+3)* 0.00059)/ parseFloat(values.weftCount)
         const W11 = parseFloat(values.warpYarnCost)+parseFloat(values.warpYarnDyeCost)
         const W12 = W11 * (parseFloat(values.dyeingWastage)/100)
         const W1 = ( W11 + W12 ) * WG
@@ -105,10 +112,11 @@ const FabCostContainer = ()=> {
         const C2 = C1 + ( C1 * (parseFloat(values.washingShrinkage)/100))
         const C3 = C2 + parseFloat(values.packTrans) + parseFloat(values.expense)
         const R =  C3 + ( C3 * (parseFloat(values.profit)/100))
-        setValues({...values,ends : finalWarpingCharge})
-        setValues({...values,warpGms : WG})
+        setValues({...values,warpingCharge : finalWarpingCharge})
         setValues({...values,weftGms : EG})
         setValues({...values,rate : R})
+        setValues({...values,ends : calcEnds})
+        setValues({...values,warpGms : WG})
         console.log('WG : ', WG)
         console.log('EG : ', EG)
         console.log('W1 : ', W1)
@@ -118,6 +126,32 @@ const FabCostContainer = ()=> {
         console.log('C2 : ', C2)
         console.log('C3 : ', C3)
         console.log('R  : ', R)
+        // -------------------------------------------------
+        // console.log(values)
+        console.log('warpCount :', values.warpCount)
+        console.log('weftCount :', values.weftCount)
+        console.log('Reed :', values.reed)
+        console.log('pick :', values.pick)
+        console.log('loomWidth :', values.loomWidth)
+        console.log('warpGms :', values.warpGms)
+        console.log('weftGms :', values.weftGms)
+        console.log('ends :', values.ends)
+        console.log('warpYarnCost :', values.warpYarnCost)
+        console.log('weftYarnCost :', values.weftYarnCost)
+        console.log('warpYarnDyeCost :', values.warpYarnDyeCost)
+        console.log('weftYarnDyeCost :', values.weftYarnDyeCost)
+        console.log('dyeingWastage :', values.dyeingWastage)
+        console.log('loomCrimp :', values.loomCrimp)
+        console.log('washingShrinkage :', values.washingShrinkage)
+        console.log('warpingCharge :', values.warpingCharge)
+        console.log('sizingCharge :', values.sizingCharge)
+        console.log('washingCharge :', values.washingCharge)
+        console.log('pickRate :', values.pickRate)
+        console.log('packTrans :', values.packTrans)
+        console.log('expense :', values.expense)
+        console.log('profit :', values.profit)
+        console.log('Rate : ', values.rate)
+        // -------------------------------------------------
         clearFilters()
     }
 
